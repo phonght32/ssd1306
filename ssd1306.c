@@ -1,9 +1,6 @@
 #include "stdlib.h"
 #include "ssd1306.h"
 
-#define SPI_TIMEOUT_MS 						100
-#define I2C_TIMEOUT_MS 						100
-
 #define SSD1306_REG_DATA_ADDR				0x40
 #define SSD1306_REG_CMD_ADDR				0x00
 
@@ -42,6 +39,12 @@
 #define SSD1306_CHARGEPUMP_OFF 				0x10
 
 #define NUM_OF_BUF  						2
+
+#define SPI_CS_ACTIVE  						0
+#define SPI_CS_UNACTIVE  					1
+#define SPI_TIMEOUT_MS 						100
+
+#define I2C_TIMEOUT_MS 						100
 
 typedef err_code_t (*write_cmd_func)(ssd1306_handle_t handle, uint8_t cmd);
 typedef err_code_t (*write_data_func)(ssd1306_handle_t handle, uint8_t *data, uint16_t len);
@@ -144,21 +147,27 @@ static void draw_line(ssd1306_handle_t handle, uint8_t x_start, uint8_t y_start,
 	}
 }
 
-static err_code_t ssd1306_spi_write_cmd(ssd1306_handle_t handle, uint8_t data)
+static err_code_t ssd1306_spi_write_cmd(ssd1306_handle_t handle, uint8_t cmd)
 {
-	/* Currently SPI not supported */
+	handle->set_cs(SPI_CS_ACTIVE);
+	handle->set_dc(0);
+	handle->spi_send(&cmd, 1, SPI_TIMEOUT_MS);
+	handle->set_cs(SPI_CS_UNACTIVE);
 
 	return ERR_CODE_SUCCESS;
 }
 
 static err_code_t ssd1306_spi_write_data(ssd1306_handle_t handle, uint8_t *data, uint16_t len)
 {
-	/* Currently SPI not supported */
+	handle->set_cs(SPI_CS_ACTIVE);
+	handle->set_dc(1);
+	handle->spi_send(data, len, SPI_TIMEOUT_MS);
+	handle->set_cs(SPI_CS_UNACTIVE);
 
 	return ERR_CODE_SUCCESS;
 }
 
-static err_code_t ssd1306_i2c_write_cmd(ssd1306_handle_t handle, uint8_t data)
+static err_code_t ssd1306_i2c_write_cmd(ssd1306_handle_t handle, uint8_t cmd)
 {
 	return ERR_CODE_SUCCESS;
 }
