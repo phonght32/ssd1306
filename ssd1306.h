@@ -217,7 +217,7 @@ err_code_t ssd1306_draw_line(ssd1306_handle_t handle, uint8_t x1, uint8_t y1, ui
 err_code_t ssd1306_draw_rectangle(ssd1306_handle_t handle, uint8_t x_origin, uint8_t y_origin, uint8_t width, uint8_t height, ssd1306_color_t color);
 
 /*
- * @brief   Draw Circle.
+ * @brief   Draw circle.
  *
  * @param   handle Handle structure.
  * @param   x_origin Origin horizontal position.
@@ -230,6 +230,22 @@ err_code_t ssd1306_draw_rectangle(ssd1306_handle_t handle, uint8_t x_origin, uin
  *      - Others:           Fail.
  */
 err_code_t ssd1306_draw_circle(ssd1306_handle_t handle, uint8_t x_origin, uint8_t y_origin, uint8_t radius, ssd1306_color_t color);
+
+/*
+ * @brief   Draw bitmap.
+ *
+ * @param   handle Handle structure.
+ * @param   x_origin Origin horizontal position.
+ * @param   y_origin Origin vertical position.
+ * @param   width Width in pixel.
+ * @param   height Height in pixel.
+ * @param 	bitmap Bitmap.
+ *
+ * @return
+ *      - ERR_CODE_SUCCESS: Success.
+ *      - Others:           Fail.
+ */
+err_code_t handle_draw_bitmap(ssd1306_handle_t handle, uint8_t x_origin, uint8_t y_origin, uint8_t width, uint8_t height, uint8_t *bitmap);
 
 /*
  * @brief   Set current position.

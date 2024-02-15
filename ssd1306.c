@@ -513,6 +513,37 @@ err_code_t ssd1306_draw_circle(ssd1306_handle_t handle, uint8_t x_origin, uint8_
 	return ERR_CODE_SUCCESS;
 }
 
+err_code_t handle_draw_bitmap(ssd1306_handle_t handle, uint8_t x_origin, uint8_t y_origin, uint8_t width, uint8_t height, uint8_t *bitmap)
+{
+	/* Check if handle structure is NULL */
+	if (handle == NULL)
+	{
+		return ERR_CODE_NULL_PTR;
+	}
+
+	handle->buf_idx ^= 1;
+	memcpy(handle->buf[handle->buf_idx], handle->buf[handle->buf_idx ^ 1], handle->buf_len);
+
+	uint8_t num_byte_per_row = width / 8;
+
+	for (uint8_t height_idx = 0; height_idx < height; height_idx++) {
+		for (uint8_t byte_idx = 0; byte_idx < num_byte_per_row; byte_idx++) {
+			for (uint8_t width_idx = 0; width_idx < 8; width_idx++) {
+				uint8_t x = width_idx + byte_idx * 8;
+				uint8_t y = height_idx;
+
+				if (((bitmap[height_idx * num_byte_per_row + byte_idx] << width_idx) & 0x80) == 0x80) {
+					handle->buf[handle->buf_idx][x + (y / 8)*handle->width] |= (1 << (y % 8));
+				} else {
+					handle->buf[handle->buf_idx][x + (y / 8)*handle->width] &= ~ (1 << (y % 8));
+				}
+			}
+		}
+	}
+
+	return ERR_CODE_SUCCESS;
+}
+
 err_code_t ssd1306_set_position(ssd1306_handle_t handle, uint8_t x, uint8_t y)
 {
 	/* Check if handle structure is NULL */
