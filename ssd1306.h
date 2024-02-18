@@ -245,7 +245,7 @@ err_code_t ssd1306_draw_circle(ssd1306_handle_t handle, uint8_t x_origin, uint8_
  *      - ERR_CODE_SUCCESS: Success.
  *      - Others:           Fail.
  */
-err_code_t handle_draw_bitmap(ssd1306_handle_t handle, uint8_t x_origin, uint8_t y_origin, uint8_t width, uint8_t height, uint8_t *bitmap);
+err_code_t ssd1306_draw_bitmap(ssd1306_handle_t handle, uint8_t x_origin, uint8_t y_origin, uint8_t width, uint8_t height, uint8_t *bitmap);
 
 /*
  * @brief   Set current position.
