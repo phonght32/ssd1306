@@ -33,8 +33,8 @@ extern "C" {
 typedef err_code_t (*ssd1306_func_set_cs)(uint8_t level);
 typedef err_code_t (*ssd1306_func_set_dc)(uint8_t level);
 typedef err_code_t (*ssd1306_func_set_rst)(uint8_t level);
-typedef err_code_t (*ssd1306_func_spi_send)(uint8_t *buf_send, uint16_t len, uint32_t timeout_ms);
-typedef err_code_t (*ssd1306_func_i2c_send)(uint8_t *buf_send, uint16_t len, uint32_t timeout_ms);
+typedef err_code_t (*ssd1306_func_spi_send)(uint8_t *buf_send, uint16_t len);
+typedef err_code_t (*ssd1306_func_i2c_send)(uint8_t *buf_send, uint16_t len);
 
 /**
  * @brief   Handle structure.

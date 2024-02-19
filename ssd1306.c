@@ -42,9 +42,6 @@
 
 #define SPI_CS_ACTIVE  						0
 #define SPI_CS_UNACTIVE  					1
-#define SPI_TIMEOUT_MS 						100
-
-#define I2C_TIMEOUT_MS 						100
 
 typedef err_code_t (*write_cmd_func)(ssd1306_handle_t handle, uint8_t cmd);
 typedef err_code_t (*write_data_func)(ssd1306_handle_t handle, uint8_t *data, uint16_t len);
@@ -151,7 +148,7 @@ static err_code_t ssd1306_spi_write_cmd(ssd1306_handle_t handle, uint8_t cmd)
 {
 	handle->set_cs(SPI_CS_ACTIVE);
 	handle->set_dc(0);
-	handle->spi_send(&cmd, 1, SPI_TIMEOUT_MS);
+	handle->spi_send(&cmd, 1);
 	handle->set_cs(SPI_CS_UNACTIVE);
 
 	return ERR_CODE_SUCCESS;
@@ -161,7 +158,7 @@ static err_code_t ssd1306_spi_write_data(ssd1306_handle_t handle, uint8_t *data,
 {
 	handle->set_cs(SPI_CS_ACTIVE);
 	handle->set_dc(1);
-	handle->spi_send(data, len, SPI_TIMEOUT_MS);
+	handle->spi_send(data, len);
 	handle->set_cs(SPI_CS_UNACTIVE);
 
 	return ERR_CODE_SUCCESS;
@@ -173,7 +170,7 @@ static err_code_t ssd1306_i2c_write_cmd(ssd1306_handle_t handle, uint8_t cmd)
 
 	buf[0] = SSD1306_REG_CMD_ADDR;
 	buf[1] = cmd;
-	handle->i2c_send(buf, 2, I2C_TIMEOUT_MS);
+	handle->i2c_send(buf, 2);
 
 	return ERR_CODE_SUCCESS;
 }
@@ -184,7 +181,7 @@ static err_code_t ssd1306_i2c_write_data(ssd1306_handle_t handle, uint8_t *data,
 
 	buf[0] = SSD1306_REG_DATA_ADDR;
 	memcpy(&buf[1], data, len);
-	handle->i2c_send(buf, len + 1, I2C_TIMEOUT_MS);
+	handle->i2c_send(buf, len + 1);
 
 	return ERR_CODE_SUCCESS;
 }
