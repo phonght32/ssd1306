@@ -166,22 +166,14 @@ static err_code_t ssd1306_spi_write_data(ssd1306_handle_t handle, uint8_t *data,
 
 static err_code_t ssd1306_i2c_write_cmd(ssd1306_handle_t handle, uint8_t cmd)
 {
-	uint8_t buf[2];
-
-	buf[0] = SSD1306_REG_CMD_ADDR;
-	buf[1] = cmd;
-	handle->i2c_send(buf, 2);
+	handle->i2c_send(SSD1306_REG_CMD_ADDR, &cmd, 1);
 
 	return ERR_CODE_SUCCESS;
 }
 
 static err_code_t ssd1306_i2c_write_data(ssd1306_handle_t handle, uint8_t *data, uint16_t len)
 {
-	uint8_t buf[len + 1];
-
-	buf[0] = SSD1306_REG_DATA_ADDR;
-	memcpy(&buf[1], data, len);
-	handle->i2c_send(buf, len + 1);
+	handle->i2c_send(SSD1306_REG_DATA_ADDR, data, len);
 
 	return ERR_CODE_SUCCESS;
 }
